@@ -1,4 +1,4 @@
-# Đoán số đùi gà 🍗 — mini game
+ — mini game
 
 ## 1. Project structure
 
