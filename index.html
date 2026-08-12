@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>Flower TrueOrDare 🌸 ⭐</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Animated Falling Star Canvas -->
+  <canvas id="star-canvas"></canvas>
+
+  <div id="app">
+
+    <!-- Sound Toggle Button -->
+    <button class="sound-btn" id="btn-sound-toggle" title="Bật/Tắt âm thanh">🔊</button>
+
+    <!-- SCREEN 1: NAME ENTRY -->
+    <section class="screen" id="screen-name" data-screen>
+      <div class="card">
+        <div class="crown-icon">🌸</div>
+        <h1 class="app-title">FLOWER TRUEORDARE</h1>
+        <p class="app-subtitle">Nhập tên của bạn để bắt đầu thử thách</p>
+
+        <div class="input-group">
+          <input type="text" id="name-input" class="text-input" maxlength="20" placeholder="[ Nhập tên ]" autocomplete="off">
+        </div>
+        <p class="error-text" id="name-error" hidden>Vui lòng nhập tên để chơi nhé! 🥺</p>
+
+        <button class="btn btn-primary" id="btn-start-game">BẮT ĐẦU CHƠI</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: MAIN MENU -->
+    <section class="screen" id="screen-menu" data-screen hidden>
+      <div class="card">
+        <div class="crown-icon">👑</div>
+        <p class="app-subtitle" style="margin-bottom: 2px;">Xin chào,</p>
+        <h1 class="app-title" id="menu-player-name">Người chơi</h1>
+
+        <div class="stat-pills">
+          <div class="stat-pill">Ván: <span id="stat-round">1</span></div>
+          <div class="stat-pill">Số lần thua: <span id="stat-loss">0/2</span></div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-menu-play">FLOWER TRUEORDARE 🌸</button>
+        <button class="btn btn-ghost" id="btn-menu-change-name">Đổi tên</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: STAR BOX FLOWER GAME -->
+    <section class="screen" id="screen-game" data-screen hidden>
+      <div class="card">
+        <div class="star-box-header">🌸 ⭐ STAR BOX ⭐ 🌸</div>
+
+        <!-- Star Box Dense Flower Container -->
+        <div class="star-box-container" id="star-box-container"></div>
+
+        <!-- Timer Badge -->
+        <div class="timer-badge" id="timer-badge">
+          <span>⏱</span>
+          <span id="timer-text">7</span>
+        </div>
+
+        <!-- Question & Guess Form -->
+        <p class="app-title" style="font-size: 1.35rem; margin-bottom: 12px;" id="game-question-title">
+          <span id="target-emoji-prefix">🌸</span> CÓ BAO NHIÊU BÔNG HOA <span id="target-emoji-span" class="target-emoji-highlight">🌸</span>?
+        </p>
+
+        <div class="input-group" style="max-width: 200px; margin: 0 auto 12px;">
+          <input type="number" id="answer-number-input" class="text-input" pattern="[0-9]*" inputmode="numeric" placeholder="[ Nhập số ]">
+        </div>
+        <p class="error-text" id="game-answer-error" hidden>Vui lòng nhập số hợp lệ!</p>
+
+        <button class="btn btn-primary" id="btn-submit-count">CHỐT ĐÁP ÁN</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: WIN SCREEN -->
+    <section class="screen" id="screen-win" data-screen hidden>
+      <div class="card">
+        
+        <!-- Win Step 1: Choice (True or Dare for Chí Nghĩa) -->
+        <div id="win-step-choice">
+          <div class="crown-icon">🎉</div>
+          <h1 class="app-title">CHÍNH XÁC!</h1>
+          <p class="app-subtitle" style="color: var(--kfc-gold); font-size: 1.15rem;" id="win-subtitle">⭐ BẠN ĐÃ CHIẾN THẮNG VẺ VANG!</p>
+          <p class="app-subtitle" style="margin-top: 8px;">Bạn muốn Chí Nghĩa chịu <strong>"TRUE"</strong> hay <strong>"DARE"</strong>?</p>
+
+          <div class="choice-grid">
+            <button class="btn btn-truth" id="btn-win-truth">🔥 BẮT CHÍ NGHĨA "TRUE"</button>
+            <button class="btn btn-dare" id="btn-win-dare">😈 BẮT CHÍ NGHĨA "DARE"</button>
+          </div>
+        </div>
+
+        <!-- Win Step 2: Custom Penalty Input -->
+        <div id="win-step-input" hidden>
+          <div class="prompt-box">
+            <span class="prompt-badge" id="win-penalty-tag">🔥 TRUE CHO CHÍ NGHĨA</span>
+            <p class="prompt-text" style="font-size: 1rem; margin-top: 4px;">Nhập câu hỏi hoặc thử thách mà bạn muốn dành cho Chí Nghĩa:</p>
+          </div>
+
+          <div class="input-group">
+            <textarea id="win-penalty-input" class="text-input text-area" rows="3" placeholder="[ Nhập nội dung thử thách/câu hỏi... ]"></textarea>
+          </div>
+          <p class="error-text" id="win-penalty-error" hidden>Vui lòng nhập nội dung trước khi gửi!</p>
+
+          <button class="btn btn-primary" id="btn-win-submit">GỬI HÌNH PHẠT CHÓ CHÍ NGHĨA</button>
+        </div>
+
+        <!-- Win Step 3: Success Notification & Screenshot Prompt -->
+        <div id="win-step-success" hidden>
+          <div class="crown-icon">👑</div>
+          <h1 class="app-title" style="color: var(--kfc-gold);">ĐÃ GỬI HÌNH PHẠT!</h1>
+
+          <div class="victory-banner" style="font-size: 1.1rem; line-height: 1.5; padding: 18px; margin: 16px 0;">
+            📸 <strong>Hãy chụp màn hình chiến thắng vẻ vang này và gửi cho Chí Nghĩa thua cuộc biết nhé!</strong>
+          </div>
+
+          <button class="btn btn-gold" id="btn-win-continue">TIẾP TỤC CHƠI VÁN MỚI</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCREEN 5: LOSS CHOICE 1 SCREEN -->
+    <section class="screen" id="screen-loss1" data-screen hidden>
+      <div class="card">
+        <div class="crown-icon">❌</div>
+        <h1 class="app-title" style="color: var(--cute-hot-pink);" id="loss1-headline">SAI RỒI!</h1>
+
+        <!-- Wrong Answer Result Detail Banner -->
+        <div class="loss-result-banner" id="loss1-banner">
+          <div class="loss-detail-item">Bạn đoán: <span id="loss1-guessed-val">18</span></div>
+          <div class="loss-detail-item correct">Đáp án đúng: <span id="loss1-correct-val">21</span> <span id="loss1-target-emoji">🌸</span></div>
+        </div>
+
+        <p class="app-subtitle" style="margin-top: 10px;">❌ BẠN ĐÃ THUA LẦN 1!<br>Bạn muốn làm gì?</p>
+
+        <div class="choice-grid">
+          <button class="btn btn-truth" id="btn-choice-truth1">🔥 TRUE</button>
+          <button class="btn btn-dare" id="btn-choice-dare1">😈 DARE</button>
+          <button class="btn btn-getout" id="btn-choice-getout">🔄 GỠ</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: PENALTY EXECUTION SCREEN -->
+    <section class="screen" id="screen-penalty" data-screen hidden>
+      <div class="card">
+        <div class="prompt-box">
+          <span class="prompt-badge" id="penalty-tag">🔥 TRUE</span>
+          <p class="prompt-text" id="penalty-text">Nội dung câu hỏi...</p>
+        </div>
+
+        <!-- Truth input form -->
+        <div id="truth-form">
+          <div class="input-group">
+            <textarea id="truth-answer-input" class="text-input text-area" rows="3" placeholder="[ Nhập câu trả lời của bạn... ]"></textarea>
+          </div>
+          <p class="error-text" id="truth-error" hidden>Vui lòng nhập câu trả lời trước khi gửi!</p>
+          <button class="btn btn-primary" id="btn-submit-truth">GỬI CÂU TRẢ LỜI</button>
+        </div>
+
+        <!-- Dare confirmation form (NO TEXTAREA) -->
+        <div id="dare-form" hidden>
+          <button class="btn btn-primary" id="btn-accept-dare">😈 CHẤP NHẬN HÌNH PHẠT</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 7: LOSS CHOICE 2 DOUBLE PENALTY SCREEN -->
+    <section class="screen" id="screen-loss2" data-screen hidden>
+      <div class="card">
+        <div class="crown-icon">💀</div>
+        <h1 class="app-title" style="color: var(--cute-hot-pink);" id="loss2-headline">SAI RỒI!</h1>
+
+        <!-- Wrong Answer Result Detail Banner -->
+        <div class="loss-result-banner" id="loss2-banner">
+          <div class="loss-detail-item">Bạn đoán: <span id="loss2-guessed-val">18</span></div>
+          <div class="loss-detail-item correct">Đáp án đúng: <span id="loss2-correct-val">21</span> <span id="loss2-target-emoji">🌸</span></div>
+        </div>
+
+        <p class="app-subtitle" style="color: var(--kfc-gold); margin-top: 10px;">💀 BẠN ĐÃ THUA 2 LẦN!<br>😈 HÌNH PHẠT NHÂN ĐÔI</p>
+
+        <div class="choice-grid">
+          <button class="btn btn-truth" id="btn-choice-truth2">🔥 TRUE ×2</button>
+          <button class="btn btn-dare" id="btn-choice-dare2">😈 DARE ×2</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8: GAME OVER / CHALLENGE COMPLETE SCREEN -->
+    <section class="screen" id="screen-complete" data-screen hidden>
+      <div class="card">
+        <div class="crown-icon" id="complete-icon">🏆</div>
+        <h1 class="app-title" id="complete-title">CHALLENGE COMPLETE!</h1>
+        <p class="app-subtitle" id="complete-subtitle">Cảm ơn bạn đã tham gia Flower TrueOrDare!</p>
+
+        <div class="loss-result-banner" id="complete-banner" hidden>
+          <div class="loss-detail-item">Bạn đoán: <span id="complete-guessed-val">18</span></div>
+          <div class="loss-detail-item correct">Đáp án đúng: <span id="complete-correct-val">21</span> <span id="complete-target-emoji">🌸</span></div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-new-game" style="margin-top: 16px;">TIẾP TỤC CHƠI VÁN MỚI</button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/game-state.js"></script>
+  <script src="js/starfield.js"></script>
+  <script src="js/gsheet.js"></script>
+  <script src="js/flower-game.js"></script>
+  <script src="js/truth-dare.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
