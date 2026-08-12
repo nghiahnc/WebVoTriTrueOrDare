@@ -3,9 +3,9 @@
    =========================================================== */
 
 const GAME_CONFIG = {
-  minFlowers: 40,
-  maxFlowers: 60,
-  timeLimit: 6,
+  minFlowers: 30,
+  maxFlowers: 50,
+  timeLimit: 7,
   maxLosses: 2,
   flowers: [
     "🌸",
@@ -14,7 +14,7 @@ const GAME_CONFIG = {
     "🌻",
     "🌹",
     "🌷",
-    "💐"
+    "🍁"
   ]
 };
 
